@@ -13,6 +13,8 @@ FROM ${BASE_IMAGE_PREFIX}php:apache-buster
 
 COPY epgrec/ /var/www/html/epgrec
 
+RUN ls -ltr epgrec/
+
 RUN cp epgrec/config.php.sample epgrec/config.php
 RUN cp epgrec/do-record.sh.sample epgrec/do-record.sh
 
