@@ -6,14 +6,12 @@ FROM ${BASE_IMAGE_PREFIX}php:apache-buster
 #RUN /bin/cp -f /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
 #RUN apt-get -y update && apt-get install -y git at
-RUN which apt
-RUN which apt-get
-RUN which dpkg
-
-RUN apt-get -y update 
-RUN apt-get -y install git at
-RUN git clone git://git.osdn.net/gitroot/epgrec/epgrec.git
+#RUN apt-get -y update 
+#RUN apt-get -y install git at
+#RUN git clone git://git.osdn.net/gitroot/epgrec/epgrec.git
 #RUN wget https://ja.osdn.net/frs/redir.php?m=acc&f=epgrec%2F46492%2Fepgrec-20100322.tar.gz && tar xzf epgrec-20100322.tar.gz
+
+COPY epgrec/ /epgrec
 
 RUN cp epgrec/config.php.sample epgrec/config.php
 RUN cp epgrec/do-record.sh.sample epgrec/do-record.sh
