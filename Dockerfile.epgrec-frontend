@@ -1,5 +1,5 @@
 FROM ARG BASE_IMAGE_PREFIX
-FROM ${BASE_IMAGE_PREFIX}php:apache-buster
+FROM ${BASE_IMAGE_PREFIX}php
 #FROM ${BASE_IMAGE_PREFIX}php:apache-buster
 
 #RUN timedatectl set-timezone Asia/Tokyo
