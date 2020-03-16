@@ -12,6 +12,7 @@ FROM ${BASE_IMAGE_PREFIX}php:apache-buster
 #RUN wget https://ja.osdn.net/frs/redir.php?m=acc&f=epgrec%2F46492%2Fepgrec-20100322.tar.gz && tar xzf epgrec-20100322.tar.gz
 
 COPY epgrec/ /epgrec
+RUN ls -ltr epgrec
 
 RUN cp epgrec/config.php.sample epgrec/config.php
 RUN cp epgrec/do-record.sh.sample epgrec/do-record.sh
