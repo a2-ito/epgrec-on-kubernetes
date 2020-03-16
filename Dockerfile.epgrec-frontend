@@ -7,7 +7,8 @@ FROM ${BASE_IMAGE_PREFIX}php
 
 #RUN apt-get -y update && apt-get install -y git at
 #RUN git clone git://git.osdn.net/gitroot/epgrec/epgrec.git
-RUN apt-get -y install git
+RUN cat /etc/*-release
+RUN apt-get -y update
 RUN wget https://ja.osdn.net/frs/redir.php?m=acc&f=epgrec%2F46492%2Fepgrec-20100322.tar.gz && tar xzf epgrec-20100322.tar.gz
 
 RUN cp epgrec/config.php.sample epgrec/config.php
