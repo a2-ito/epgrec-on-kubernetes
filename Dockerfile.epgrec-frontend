@@ -1,5 +1,9 @@
 ARG BASE_IMAGE_PREFIX
 FROM ${BASE_IMAGE_PREFIX}php:7.2-apache-buster
+
+# HACK: don't fail when no qemu binary provided
+COPY .gitignore qemu-${ARCH}-static* /usr/bin/
+
 #FROM ${BASE_IMAGE_PREFIX}php
 
 #RUN timedatectl set-timezone Asia/Tokyo
