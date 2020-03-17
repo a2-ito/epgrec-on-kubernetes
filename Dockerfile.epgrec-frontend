@@ -1,43 +1,67 @@
 ARG BASE_IMAGE_PREFIX
-FROM ${BASE_IMAGE_PREFIX}php:7.2-apache-buster
+FROM ${BASE_IMAGE_PREFIX}mono
+
+# see hooks/post_checkout
+ARG ARCH
 
 # HACK: don't fail when no qemu binary provided
 COPY .gitignore qemu-${ARCH}-static* /usr/bin/
 
-#FROM ${BASE_IMAGE_PREFIX}php
+ARG OPENRA_RELEASE_VERSION=20200202
+ARG OPENRA_RELEASE
+ARG OPENRA_RELEASE_TYPE=release
 
-#RUN timedatectl set-timezone Asia/Tokyo
-#RUN /bin/cp -f /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+# https://www.openra.net/download/
+ENV OPENRA_RELEASE_VERSION=${OPENRA_RELEASE_VERSION:-20200202}
+ENV OPENRA_RELEASE_TYPE=${OPENRA_RELEASE_TYPE:-release}
+ENV OPENRA_RELEASE=${OPENRA_RELEASE:-https://github.com/OpenRA/OpenRA/releases/download/${OPENRA_RELEASE_TYPE}-${OPENRA_RELEASE_VERSION}/OpenRA-${OPENRA_RELEASE_TYPE}-${OPENRA_RELEASE_VERSION}-source.tar.bz2}
 
-#RUN apt-get -y update && apt-get install -y git at
-#RUN apt-get -y update 
-#RUN apt-get -y install git at
-#RUN git clone git://git.osdn.net/gitroot/epgrec/epgrec.git
-#RUN wget https://ja.osdn.net/frs/redir.php?m=acc&f=epgrec%2F46492%2Fepgrec-20100322.tar.gz && tar xzf epgrec-20100322.tar.gz
-
-COPY epgrec/ /var/www/html/epgrec
-
-RUN ls -ltr /var/www/html/epgrec/
-
-RUN cp epgrec/config.php.sample epgrec/config.php
-RUN cp epgrec/do-record.sh.sample epgrec/do-record.sh
-
-RUN chmod 777 epgrec/templates_c
-RUN chmod 777 epgrec/video
-RUN chmod 777 epgrec/thumbs
-RUN chmod 777 epgrec/settings
-RUN chmod 777 epgrec/cache
-
-# softcas
-#ADD ./softcas/libpcsclite.so.1.0.0 /usr/lib64/
-
-#ADD ./do-record.sh epgrec/
-
-EXPOSE 80
-
-RUN mkdir -p /var/www/html
-RUN echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
-RUN echo "<?php echo \"Hello, PHP on Docker!\"; ?>" > /var/www/html/index.php
-
-#CMD ["php", "/var/www/html/index.php"] 
+RUN set -xe; \
+        echo "=================================================================="; \
+        echo "Building OpenRA:"; \
+        echo "  version:\t${OPENRA_RELEASE_VERSION}"; \
+        echo "  type:   \t${OPENRA_RELEASE_TYPE}"; \
+        echo "  source: \t${OPENRA_RELEASE}"; \
+        echo "=================================================================="; \
+        \
+        apt-get update; \
+        apt-get -y upgrade; \
+        apt-get install -y --no-install-recommends \
+                    ca-certificates \
+                    curl \
+                    liblua5.1 \
+                    make \
+                    patch \
+                    unzip \
+                    xdg-utils \
+                  ; \
+        useradd -d /home/openra -m -s /sbin/nologin openra; \
+        mkdir /home/openra/source; \
+        cd /home/openra/source; \
+        curl -L $OPENRA_RELEASE | tar xj; \
+# HACK to fix hard coded paths in upstream in old releases.
+# bleed status: https://github.com/OpenRA/OpenRA/blob/bleed/thirdparty/configure-native-deps.sh
+        mkdir -p /opt/lib; \
+        liblua=$(find /usr/lib -name liblua5.1.so); \
+        ln -s $liblua /opt/lib; \
+        ls -la /opt/lib/*.so; \
+# /HACK
+# PATCH 'SERVER FULL' BUG
+        if [ "$OPENRA_RELEASE_VERSION" = "20181215" ]; then \
+           curl -L https://github.com/OpenRA/OpenRA/commit/c6d5bc9511cf983b8b7a769ab3064ed45fc4fb02.diff | patch -p1; \
+        fi; \
+# /PATCH
+        make dependencies; \
+        make all; \
+        make prefix= DESTDIR=/home/openra install; \
+        cd .. && rm -rf /home/openra/source; \
+        chmod 755 /home/openra/lib/openra/launch-dedicated.sh; \
+        mkdir /home/openra/.openra \
+              /home/openra/.openra/Logs \
+              /home/openra/.openra/maps \
+            ;\
+        chown -R openra:openra /home/openra/.openra; \
+        apt-get purge -y curl make patch unzip; \
+        rm -rf /var/lib/apt/lists/* \
+               /var/cache/apt/archives/*
 
