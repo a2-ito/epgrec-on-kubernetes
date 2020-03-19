@@ -1,0 +1,28 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: role-epgrec-system
+  namespace: epgrec
+rules:
+- apiGroups: ["rbac.authorization.k8s.io"]
+  resources: ["roles","rolebindings"]
+  verbs: ["get","list"]
+- apiGroups: [""]
+  resources: ["serviceaccounts"]
+  verbs: ["*"]
+- apiGroups: ["apps"]
+  resources: ["deployments","replicasets","daemonsets","statefulsets"]
+  verbs: ["*"]
+- apiGroups: ["extensions"]
+  resources: ["deployments","replicasets","daemonsets","ingresses"]
+  verbs: ["*"]
+- apiGroups: [""]
+  resources: ["services","helmcharts","pods","endpoints","persistentvolumeclaims","secrets","configmaps","resourcequotas"]
+  verbs: ["*"]
+- apiGroups: ["networking.k8s.io"]
+  resources: ["ingresses"]
+  verbs: ["*"]
+- apiGroups: ["batch"]
+  resources: ["cronjobs","jobs"]
+  verbs: ["*"]

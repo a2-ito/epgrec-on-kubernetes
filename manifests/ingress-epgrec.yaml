@@ -1,0 +1,17 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-epgrec
+  namespace: epgrec
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+  - host: brigade.k3s
+    http:
+      paths: 
+      - path: /
+        backend:
+          serviceName: epgrec-frontend
+          servicePort: 80
