@@ -1,6 +1,6 @@
 ARG BASE_IMAGE_PREFIX
 #FROM ${BASE_IMAGE_PREFIX}php:apache-buster
-FROM ${BASE_IMAGE_PREFIX}php:7.4-fpm
+FROM ${BASE_IMAGE_PREFIX}ubuntu
 
 #RUN timedatectl set-timezone Asia/Tokyo
 #RUN /bin/cp -f /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
