@@ -1,0 +1,40 @@
+ARG BASE_IMAGE_PREFIX
+#FROM ${BASE_IMAGE_PREFIX}php:apache-buster
+FROM ${BASE_IMAGE_PREFIX}alpine
+
+#RUN timedatectl set-timezone Asia/Tokyo
+#RUN /bin/cp -f /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+
+#RUN apt-get -y update && apt-get install -y git at
+#RUN git clone git://git.osdn.net/gitroot/epgrec/epgrec.git
+#RUN wget https://ja.osdn.net/frs/redir.php?m=acc&f=epgrec%2F46492%2Fepgrec-20100322.tar.gz && tar xzf epgrec-20100322.tar.gz
+
+# install VNC & the desktop system
+#RUN apt-get -y update && apt-get install -y git at
+RUN apk --update --no-cache add git
+#apt-get -y update && apt-get install -y git at
+
+RUN git clone git://git.osdn.net/gitroot/epgrec/epgrec.git
+
+RUN cp epgrec/config.php.sample epgrec/config.php
+RUN cp epgrec/do-record.sh.sample epgrec/do-record.sh
+
+RUN chmod 777 epgrec/templates_c
+RUN chmod 777 epgrec/video
+RUN chmod 777 epgrec/thumbs
+RUN chmod 777 epgrec/settings
+RUN chmod 777 epgrec/cache
+
+# softcas
+#ADD ./softcas/libpcsclite.so.1.0.0 /usr/lib64/
+
+#ADD ./do-record.sh epgrec/
+
+EXPOSE 80
+
+RUN mkdir -p /var/www/html
+RUN echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
+RUN echo "<?php echo \"Hello, PHP on Docker!\"; ?>" > /var/www/html/index.php
+
+#CMD ["php", "/var/www/html/index.php"] 
+
