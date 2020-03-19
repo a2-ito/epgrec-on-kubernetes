@@ -7,11 +7,12 @@ ARG ARCH
 COPY qemu-${ARCH}-static /usr/bin
 
 # add repository
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+#RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 
 # install VNC & the desktop system
 RUN uname -ar > /uname.build
-RUN apk --update --no-cache add git
+#RUN apk --update --no-cache add git
+RUN apt-get update -y && apt-get install -y git
 
 #RUN apt-get -y update && apt-get install -y git at
 RUN git clone git://git.osdn.net/gitroot/epgrec/epgrec.git
