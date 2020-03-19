@@ -29,7 +29,6 @@ spec:
       - image: mysql:5.7
         name: mysql
         env:
-          # Use secret in real usage
         - name: MYSQL_ROOT_PASSWORD
           value: mysql
         - name: MYSQL_USER
@@ -43,6 +42,7 @@ spec:
         ports:
         - containerPort: 3306
           name: mysql
+        command: ["mysqld", "--character-set-server=utf8", "--collation-server=utf8_unicode_ci", "--sql-mode="""]
         volumeMounts:
         - name: mysql-data
           mountPath: /var/lib/mysql

@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
       - image: a2ito/epgrec-frontend:latest
-        name: epgrec-frontend-php
+        name: epgrec-frontend
         env:
           # Use secret in real usage
         - name: LANG
@@ -37,7 +37,5 @@ spec:
         ports:
         - containerPort: 80
           name: epgrec-frontend
-      - image: a2ito/epgrec-frontend:latest
-        name: epgrec-frontend-web
       nodeSelector:
-        arch: "arm"
+        kubernetes.io/arch: "arm"
