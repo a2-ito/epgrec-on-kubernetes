@@ -9,8 +9,10 @@ spec:
   - port: 31900
     protocol: UDP
     targetPort: 1900
+    name: udp-port
   - port: 30200
     targetPort: 8200
+    name: tcp-port
   selector:
     app: minidlna
   type: NodePort
@@ -23,6 +25,9 @@ metadata:
   name: minidlna
   namespace: epgrec
 spec:
+  selector:
+    matchLabels:
+      app: minidlna
   replicas: 1
   strategy: {}
   template:
@@ -42,7 +47,9 @@ spec:
           value: MyMinidlna-on-k8s
         ports:
         - containerPort: 8200
+          name: tcp-port
         - containerPort: 1900
+          name: udp-port
           protocol: UDP
         resources: {}
         volumeMounts:
