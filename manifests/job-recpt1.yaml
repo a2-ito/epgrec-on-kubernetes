@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Job
+metadata:
+  name: job-recpt1
+  namespace: epgrec
+spec:
+  containers:
+  - name: job-recpt1
+    image: a2ito/job-recpt1
+    command: ["/bin/bash", "-c"]
+    args:
+      - |
+        trap "touch /tmp/pod/main-job-terminated" EXIT
+        /your-batch-job/bin/main --config=/config/your-job-config.yaml
+    volumeMounts:
+      - mountPath: /tmp/pod
+        name: tmp-pod
+  - name: job-encode
+    image: a2ito/job-encode
+    command: ["/bin/bash", "-c"]
+    args:
+      - |
+        /usr/local/bin/envoy --config-path=/your-batch-job/etc/envoy.json &
+        CHILD_PID=$!
+        (while true; do if [[ -f "/tmp/pod/main-job-terminated" ]]; then kill $CHILD_PID; fi; sleep 1; done) &
+        wait $CHILD_PID
+        if [[ -f "/tmp/pod/main-job-terminated" ]]; then exit 0; fi
+    volumeMounts:
+      - mountPath: /tmp/pod
+        name: tmp-pod
+        readOnly: true
+volumes:
+  - name: tmp-pod
+    emptyDir: {}
+
