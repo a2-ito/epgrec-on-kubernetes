@@ -5,8 +5,15 @@ FROM ${BASE_IMAGE_PREFIX}alpine:3.10
 ARG ARCH
 COPY qemu-${ARCH}-static /usr/bin
 
-# add repository
-#RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+ENV DEVICE="/dev/pt3video2"
+ENV CHANNEL="22"
+ENV REC_TIME="10"
+ENV DEST_FILE="/tmp/test.ts"
+
+RUN echo $DEVICE
+RUN echo $CAHNNEL
+RUN echo $REC_TIME
+RUN echo $DEST_FILE
 
 # install VNC & the desktop system
 RUN uname -ar > /uname.build

@@ -11,7 +11,7 @@ COPY qemu-${ARCH}-static /usr/bin
 # install VNC & the desktop system
 RUN uname -ar > /uname.build
 
-RUN apk --update --no-cache add git autoconf libtool make gcc g++ wget yasm nasm bzip2 libass-dev automake
+RUN apk --update --no-cache add git autoconf libtool make gcc g++ wget yasm nasm bzip2 libass automake
 
 # build fdk-aac
 RUN git clone --depth 1 git://github.com/mstorsjo/fdk-aac.git
