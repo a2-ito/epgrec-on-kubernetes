@@ -8,6 +8,11 @@ spec:
   containers:
   - name: job-recpt1
     image: a2ito/job-recpt1
+    env:
+    - name: CHANNEL
+      value: "_CHANNEL"
+    - name: REC_TIME
+      value: "_REC_TIME"    
     command: ["/bin/bash", "-c"]
     args:
       - |
@@ -19,33 +24,15 @@ spec:
         name: rectmp
   - name: job-encode
     image: a2ito/job-encode
+    env:
+    - name: CHANNEL
+      value: "_CHANNEL"
+    - name: REC_TIME
+      value: "_REC_TIME"    
     command: ["/bin/bash", "-c"]
     args:
       - |
         exit 0;
-        if [[ -f "/tmp/pod/main-job-terminated" ]]; then
-          exit 0;
-        fi
-        X264_HIGH_HDTV="-f mp4 -vcodec libx264 \
-        -r 30000/1001 -aspect 16:9 -s ${_MP4_SIZE} \
-        -bufsize 2000k -maxrate 25000k -ac 2 -ar 48000 \
-        -ab 128k -threads ${_CPU_CORES} -filter_complex channelsplit"
-
-        X264_HIGH_HDTV_ASS="-f mp4 -vcodec libx264 \
-        -r 30000/1001 -aspect 16:9 -s ${_MP4_SIZE} \
-        -bufsize 2000k -maxrate 25000k -ac 2 -ar 48000 \
-        -ab 128k -threads ${_CPU_CORES} -filter_complex channelsplit"
-
-        if [ -e "${_OUTPUT}.ass" ]; then
-          echo `date +'%Y/%m/%d %H:%M:%S'` "[I] EXEC FFMPEG ASS MODE"
-          echo `date +'%Y/%m/%d %H:%M:%S'` "[I] EXEC_FFMPEG,$$,${_INPUT} "
-          echo `date +'%Y/%m/%d %H:%M:%S'` "[I] EXEC_FFMPEG $$ [ ${_EXE_FFMPEG} -y -i ${_INPUT} ${X264_HIGH_HDTV_ASS} ${_OUTPUT} ]"
-          # ${_EXE_FFMPEG} -y -i "${_INPUT}" ${X264_HIGH_HDTV_ASS} -vf "ass=${_OUTPUT}".ass "${_OUTPUT}" >> ${_FFMPEG_LOGFILE} 2>&1
-        else
-          echo `date +'%Y/%m/%d %H:%M:%S'` "[I] EXEC_FFMPEG,$$,${_INPUT} "
-          echo `date +'%Y/%m/%d %H:%M:%S'` "[I] EXEC_FFMPEG $$ [ ${_EXE_FFMPEG} -y -i ${_INPUT} ${X264_HIGH_HDTV} ${_OUTPUT} ]"
-          ${_EXE_FFMPEG} -y -i "${_INPUT}" ${X264_HIGH_HDTV} "${_OUTPUT}" >> ${_FFMPEG_LOGFILE} 2>&1
-        fi
     volumeMounts:
       - mountPath: /tmp/pod
         name: tmp-pod

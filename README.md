@@ -64,10 +64,75 @@ kubectl config view --minify > epgrec-system.kubeconfig
 
 ## Verification
 
+### aaa
+
 ```
 KUBECONFIG=./epgrec-system.kubeconfig kubectl create -f manifests/job-recpt1-test.yaml
 ```
 
+### Test Job
+
 ```
-kubectl create -f manifests/
+KUBECONFIG=./epgrec-system.kubeconfig kubectl run testjob \
+  --image=busybox \
+  --restart=OnFailure \
+  --env="CHANNEL=22" \
+  --env="REC_TIME=10" \
+  --env="DEST_PATH=/tmp/test.ts" \
+  --env="REC_DEVICE=/dev/recpt1.dev" \
+  -- env
+```
+
+```
+cat <<EOF | kubectl create -f - 
+apiVersion: v1
+kind: Job
+metadata:
+  name: job-recpt1
+  namespace: epgrec
+spec:
+  containers:
+  - name: job-recpt1
+    image: a2ito/job-recpt1
+    env:
+    - name: CHANNEL
+      value: "_CHANNEL"
+    - name: REC_TIME
+      value: "_REC_TIME"
+    command: ["/bin/bash", "-c"]
+    args:
+      - |
+        echo recpt1 --b25 --strip "${CHANNEL}" "${REC_TIME}" /var/test.ts --device /dev/pt3video2
+    volumeMounts:
+      - mountPath: /tmp/pod
+        name: tmp-pod
+      - mountPath: /dlna/tmp
+        name: rectmp
+  - name: job-encode
+    image: a2ito/job-encode
+    env:
+    - name: CHANNEL
+      value: "_CHANNEL"
+    - name: REC_TIME
+      value: "_REC_TIME"
+    command: ["/bin/bash", "-c"]
+    args:
+      - |
+        exit 0;
+    volumeMounts:
+      - mountPath: /tmp/pod
+        name: tmp-pod
+        readOnly: false
+      - mountPath: /dlna
+        name: recdata
+volumes:
+  - name: tmp-pod
+    emptyDir: {}
+  - name: recdata
+    persistentVolumeClaim:
+      claimName: pvc-recdata
+  - name: rectmp
+    persistentVolumeClaim:
+      claimName: pvc-rectmp
+EOF
 ```
