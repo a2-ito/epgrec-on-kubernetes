@@ -11,6 +11,12 @@ COPY qemu-${ARCH}-static /usr/bin
 # install VNC & the desktop system
 RUN uname -ar > /uname.build
 
-#RUN apk --update --no-cache add git
+RUN apk --update --no-cache add wget
+
+RUN wget http://hg.honeyplanet.jp/tip.zip
+RUN unzip tip.zip
+
+RUN ./autogen.sh
+RUN ./configure.sh --enable-b25 && make && make install
 
 #CMD ["php", "/var/www/html/index.php"]
