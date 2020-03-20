@@ -15,6 +15,8 @@ spec:
     volumeMounts:
       - mountPath: /tmp/pod
         name: tmp-pod
+      - mountPath: /dlna/tmp
+        name: rectmp
   - name: job-encode
     image: a2ito/job-encode
     command: ["/bin/bash", "-c"]
@@ -47,8 +49,15 @@ spec:
     volumeMounts:
       - mountPath: /tmp/pod
         name: tmp-pod
-        readOnly: true
+        readOnly: false
+      - mountPath: /dlna
+        name: recdata
 volumes:
   - name: tmp-pod
     emptyDir: {}
-
+  - name: recdata
+    persistentVolumeClaim:
+      claimName: pvc-recdata
+  - name: rectmp
+    persistentVolumeClaim:
+      claimName: pvc-rectmp

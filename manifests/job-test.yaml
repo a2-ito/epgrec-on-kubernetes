@@ -1,0 +1,54 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-recpt1
+  namespace: default
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: job-recpt1
+        image: busybox
+        env:
+        - name: CHANNEL
+          value: "$22"
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          echo [job-recpt1] ${CHANNEL}
+          echo [job-recpt1] ${REC_TIME}
+          echo [job-recpt1] ${DEST_PATH}
+          echo [job-recpt1] ${REC_DEVICE}
+          echo recpt1 --b25 --strip "$(CHANNEL)" "$(REC_TIME)" /var/test.ts --device /dev/pt3video2
+          touch /tmp/temp.file
+          mv /tmp/temp.file /tmp/pod/temp.file
+          touch ${DEST_PATH}.trg
+        volumeMounts:
+        - mountPath: /tmp/pod
+          name: tmp-pod
+      - name: job-encode
+        image: busybox
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          echo [job-encode] ${CHANNEL}
+          echo [job-encode] ${REC_TIME}
+          echo [job-encode] ${DEST_PATH}
+          echo [job-encode] ${REC_DEVICE}
+          while true
+            if [ -f "/tmp/pod/temp.file.trg" ];
+              echo "hoge"
+              ls -ltr /tmp/pod
+              rm "/tmp/pod/temp.file.trg"
+              sleep 5
+            fi
+          done
+          exit 0;
+        volumeMounts:
+        - mountPath: /tmp/pod
+          name: tmp-pod
+      volumes:
+      - name: tmp-pod
+        emptyDir: {}
