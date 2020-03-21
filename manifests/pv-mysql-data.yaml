@@ -4,14 +4,14 @@ kind: PersistentVolume
 metadata:
   name: pv-mysql-data
 spec:
+  storageClassName: manual
   capacity:
     storage: 100Gi
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Recycle # Reclaim policies are defined below
-  nfs:
-    server: 192.168.11.2
-    path: /nfsshare/app/epgrec-mysql
+  hostPath:
+    path: /mnt/sharerdvol/nfsshare/app/epgrec-mysql
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -19,6 +19,7 @@ metadata:
   name: pvc-mysql-data
   namespace: epgrec
 spec:
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:

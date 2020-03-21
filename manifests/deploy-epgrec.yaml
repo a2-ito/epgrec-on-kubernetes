@@ -28,7 +28,7 @@ spec:
         app: epgrec-frontend
     spec:
       containers:
-      - image: a2ito/epgrec-frontend:latest
+      - image: a2ito/epgrec-frontend:latest-aarch64
         name: epgrec-frontend
         env:
           # Use secret in real usage

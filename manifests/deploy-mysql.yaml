@@ -48,6 +48,8 @@ spec:
         volumeMounts:
         - name: mysql-data
           mountPath: /var/lib/mysql
+      nodeSelector:
+        kubernetes.io/arch: "amd64"
       volumes:
       - name: mysql-data
         persistentVolumeClaim:

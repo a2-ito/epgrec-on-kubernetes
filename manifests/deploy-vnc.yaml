@@ -1,0 +1,24 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alpine-vnc
+spec:
+  selector:
+    matchLabels:
+      app: alpine-vnc
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: alpine-vnc
+    spec:
+      containers:
+      - image: a2ito/alpine-vnc-arm32v7
+        name: alpine-vnc
+        ports:
+        - containerPort: 80
+          name: http
+      nodeSelector:
+        kubernetes.io/arch: "arm"

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# environment variables
+env
+
+# Register qemu-*-static for all supported processors except the 
+# current one, but also remove all registered binfmt_misc before
+echo "####################################################################"
+echo "####################################################################"
+echo "####################################################################"
+docker run --rm --privileged multiarch/qemu-user-static:register --reset
+#docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+echo "####################################################################"
+echo "####################################################################"
+echo "####################################################################"
+#docker run --rm -t arm64v8/ubuntu uname -m
