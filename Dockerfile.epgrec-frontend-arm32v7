@@ -5,7 +5,7 @@ ARG BASE_IMAGE_PREFIX
 FROM arm32v7/nginx
 
 # see hooks/post_checkout
-#ARG ARCH
+ARG ARCH
 COPY qemu-${ARCH}-static /usr/bin
 #COPY qemu-arm-static /usr/bin
 
