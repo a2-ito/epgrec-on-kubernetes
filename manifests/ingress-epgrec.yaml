@@ -8,7 +8,7 @@ metadata:
     kubernetes.io/ingress.class: traefik
 spec:
   rules:
-  - host: epgrec-frontend.rasp-cluster.local
+  - host: epgrec.rasp-cluster.local
     http:
       paths: 
       - path: /

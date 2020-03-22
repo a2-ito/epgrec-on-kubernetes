@@ -1,0 +1,21 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: egprec-frontend
+  namespace: epgrec
+spec:
+  selector:
+    matchLabels:
+      app: epgrec-frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: epgrec-frontend
+    spec:
+      containers:
+      - image: a2ito/epgrec-frontend
+        name: epgrec-frontend
+      nodeSelector:

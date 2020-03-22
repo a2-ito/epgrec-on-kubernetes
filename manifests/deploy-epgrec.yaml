@@ -28,7 +28,7 @@ spec:
         app: epgrec-frontend
     spec:
       containers:
-      - image: a2ito/epgrec-frontend-arm32v7
+      - image: a2ito/epgrec-frontend-arm32v7:latest-arm32v7
         name: epgrec-frontend
         env:
         - name: LANG
