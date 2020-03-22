@@ -13,6 +13,7 @@ FROM arm32v7/nginx
 # install VNC & the desktop system
 #RUN uname -ar > /uname.build
 #RUN apk --update --no-cache add git
+RUN ls -ltr /etc
 RUN apt-get update -y && apt-get install -y git at
 
 #RUN apt-get -y update && apt-get install -y git at
