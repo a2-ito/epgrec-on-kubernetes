@@ -34,7 +34,6 @@ kubectl create -f manifests/rolebindings-epgrec-system.yaml
 ```
 
 
-
 openssl genrsa -out epgrec-system.pem 4096
 openssl req -new -key epgrec-system.pem -out epgrec-system.csr -subj "/CN=epgrec-system/O=epgrec"
 sudo openssl x509 -req -in epgrec-system.csr \

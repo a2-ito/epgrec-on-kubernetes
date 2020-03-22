@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: Job
+metadata:
+  name: job-rectv
+  namespace: epgrec
+spec:
+  containers:
+  - name: job-recpt1
+    image: a2ito/job-recpt1
+    env:
+    - name: CHANNEL
+      value: "_CHANNEL"
+    - name: REC_TIME
+      value: "_REC_TIME"
+    - name: REC_FILE
+      value: "_REC_FILE"
+    - name: REC_DEVICE
+      value: "_REC_DEVICE"
+    command: ["/bin/bash", "-c"]
+    args:
+      - |
+        echo recpt1 --b25 --strip "${CHANNEL}" "${REC_TIME}" "${REC_FILE}" --device "${_REC_DEVICE}"
+    volumeMounts:
+      - mountPath: /tmp/pod
+        name: tmp-pod
+      - mountPath: /dlna/tmp
+        name: rectmp
+  - name: job-encode
+    image: a2ito/job-encode
+    env:
+    - name: CHANNEL
+      value: "_CHANNEL"
+    - name: REC_TIME
+      value: "_REC_TIME"
+    command: ["/bin/bash", "-c"]
+    args:
+      - |
+        echo recpt1 --b25 --strip "${CHANNEL}" "${REC_TIME}" /var/test.ts --device "${_REC_DEVICE}"
+        exit 0;
+    volumeMounts:
+      - mountPath: /tmp/pod
+        name: tmp-pod
+        readOnly: false
+      - mountPath: /dlna
+        name: recdata
+volumes:
+  - name: tmp-pod
+    emptyDir: {}
+  - name: recdata
+    persistentVolumeClaim:
+      claimName: pvc-recdata
+  - name: rectmp
+    persistentVolumeClaim:
+      claimName: pvc-rectmp
+
