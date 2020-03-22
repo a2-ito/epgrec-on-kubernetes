@@ -1,7 +1,8 @@
 ARG BASE_IMAGE_PREFIX
 #FROM ${BASE_IMAGE_PREFIX}alpine:3.10
 #FROM arm32v7/php:7.4-apache-buster
-FROM arm32v7/alpine:3.10
+#FROM arm32v7/alpine:3.10
+FROM arm32v7/nginx
 
 # see hooks/post_checkout
 #ARG ARCH
@@ -13,8 +14,7 @@ COPY qemu-arm-static /usr/bin
 
 # install VNC & the desktop system
 #RUN uname -ar > /uname.build
-#RUN apk --update --no-cache add git
-RUN ls -ltr /etc
+#RUN apk --update --no-cache add git at
 RUN apt-get update -y && apt-get install -y git at
 
 #RUN apt-get -y update && apt-get install -y git at
