@@ -1,6 +1,7 @@
 ARG BASE_IMAGE_PREFIX
 #FROM ${BASE_IMAGE_PREFIX}alpine:3.10
-FROM arm32v7/php:7.4-apache-buster
+#FROM arm32v7/php:7.4-apache-buster
+FROM arm32v7/nginx
 
 # see hooks/post_checkout
 #ARG ARCH
@@ -10,7 +11,7 @@ FROM arm32v7/php:7.4-apache-buster
 #RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 
 # install VNC & the desktop system
-RUN uname -ar > /uname.build
+#RUN uname -ar > /uname.build
 #RUN apk --update --no-cache add git
 RUN apt-get update -y && apt-get install -y git at
 
