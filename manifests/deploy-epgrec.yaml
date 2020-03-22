@@ -28,8 +28,8 @@ spec:
         app: epgrec-frontend
     spec:
       containers:
-      - image: a2ito/epgrec-frontend-arm32v7:latest-arm32v7
-        name: epgrec-frontend
+      - image: arm32v7/php:7.2-zts-buster
+        name: epgrec-frontend-php
         env:
         - name: LANG
           value: "ja_JP.UTF-8"
@@ -41,6 +41,14 @@ spec:
         volumeMounts:
         - name: rectmp
           mountPath: /temp
+      - image: arm32v7/nginx:1.17
+        name: epgrec-frontend-web
+        volumeMounts:
+        - name: shared-files
+          mountPath: /var/www/html
+        - name: nginx-config-volume
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
       nodeSelector:
         kubernetes.io/arch: "arm"
       volumes:

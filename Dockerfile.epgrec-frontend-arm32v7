@@ -1,8 +1,8 @@
 ARG BASE_IMAGE_PREFIX
 #FROM ${BASE_IMAGE_PREFIX}alpine:3.10
-#FROM arm32v7/php:7.4-apache-buster
+FROM ${BASE_IMAGE_PREFIX}php:7.2-zts-alpine3.10
 #FROM arm32v7/alpine:3.10
-FROM arm32v7/nginx
+#FROM arm32v7/nginx
 
 # see hooks/post_checkout
 ARG ARCH
