@@ -3,6 +3,8 @@ ARG BASE_IMAGE_PREFIX
 #FROM arm32v7/php:7.4-apache-buster
 FROM arm32v7/alpine:3.10
 
+COPY qemu-arm-static /usr/bin
+
 # see hooks/post_checkout
 #ARG ARCH
 #COPY qemu-${ARCH}-static /usr/bin
