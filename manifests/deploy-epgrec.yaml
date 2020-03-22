@@ -28,10 +28,9 @@ spec:
         app: epgrec-frontend
     spec:
       containers:
-      - image: a2ito/epgrec-frontend:latest-aarch64
+      - image: a2ito/epgrec-frontend-arm32v7
         name: epgrec-frontend
         env:
-          # Use secret in real usage
         - name: LANG
           value: "ja_JP.UTF-8"
         - name: TZ
@@ -48,3 +47,4 @@ spec:
       - name: rectmp
         persistentVolumeClaim:
           claimName: pvc-rectmp
+
