@@ -4,6 +4,8 @@ set -eu
 echo "? build"
 source hooks/.config
 
+echo "ARCH $ARCH"
+
 docker build \
   --build-arg BASE_IMAGE_PREFIX=${BASE_IMAGE_PREFIX} \
   --build-arg ARCH=${ARCH} \
