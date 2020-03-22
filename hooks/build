@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+set -eu
+
+echo "? build"
+source hooks/.config
 
 docker build \
   --build-arg BASE_IMAGE_PREFIX=${BASE_IMAGE_PREFIX} \
