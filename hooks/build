@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+docker build \
+  --build-arg BASE_IMAGE_PREFIX=${BASE_IMAGE_PREFIX} \
+  --build-arg ARCH=${ARCH} \
+  --file ${DOCKERFILE_PATH} \
+  --tag "${IMAGE_NAME}-${ARCH}"  \
+    .
+
