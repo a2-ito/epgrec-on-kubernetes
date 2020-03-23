@@ -17,6 +17,8 @@ COPY qemu-${ARCH}-static /usr/bin
 RUN apk --update --no-cache add git at
 
 #RUN apt-get -y update && apt-get install -y git at
+RUN ls -ltr
+RUN pwd
 RUN git clone git://git.osdn.net/gitroot/epgrec/epgrec.git
 
 RUN cp epgrec/config.php.sample epgrec/config.php
