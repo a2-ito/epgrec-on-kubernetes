@@ -17,6 +17,7 @@ metadata:
   name: egprec-frontend
   namespace: epgrec
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: epgrec-frontend
@@ -28,7 +29,8 @@ spec:
         app: epgrec-frontend
     spec:
       containers:
-      - image: arm32v7/php:7.2-zts-buster
+              #- image: a2ito/epgrec-frontend:latest-amd64
+      - image: php:7.2-fpm
         name: epgrec-frontend-php
         env:
         - name: LANG
@@ -41,7 +43,10 @@ spec:
         volumeMounts:
         - name: rectmp
           mountPath: /temp
-      - image: arm32v7/nginx:1.17
+        volumeMounts:
+        - name: shared-files
+          mountPath: /var/www/html
+      - image: nginx:1.17
         name: epgrec-frontend-web
         volumeMounts:
         - name: shared-files
@@ -50,9 +55,14 @@ spec:
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
       nodeSelector:
-        kubernetes.io/arch: "arm"
+        kubernetes.io/arch: "amd64"
       volumes:
       - name: rectmp
         persistentVolumeClaim:
           claimName: pvc-rectmp
+      - name: shared-files
+        emptyDir: {}
+      - name: nginx-config-volume
+        configMap:
+          name: nginx-config
 
