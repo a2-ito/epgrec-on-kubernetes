@@ -6,7 +6,7 @@ FROM ${BASE_IMAGE_PREFIX}php:7.2-fpm-alpine3.10
 
 # see hooks/post_checkout
 ARG ARCH
-COPY qemu-${ARCH}-static /usr/bin
+#COPY qemu-${ARCH}-static /usr/bin
 #COPY qemu-arm-static /usr/bin
 
 # add repository
