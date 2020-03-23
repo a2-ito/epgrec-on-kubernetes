@@ -10,5 +10,9 @@ echo "⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯�
 apt-get update
 apt-get install -y curl qemu-user-static binfmt-support jq moreutils
 
+for arch in ${build_architectures[@]}; do
+  cp /usr/bin/qemu-${docker_qemu_arch_map[${arch}]}-static qemu-${arch}-static
+done
+
 # downloads a local copy of qemu on docker-hub build machines
 #curl -L https://github.com/balena-io/qemu/releases/download/v3.0.0%2Bresin/qemu-3.0.0+resin-arm.tar.gz | tar zxvf - -C . && mv qemu-3.0.0+resin-arm/qemu-arm-static .
