@@ -4,9 +4,11 @@ set -eu
 echo "? build"
 source hooks/.config
 
-echo "ARCH $ARCH"
-
+echo "build_architectures $verified_build_architectures"
 for arch in ${verified_build_architectures[@]}; do
+
+	echo "ARCH $arch"
+
 	ARCH=${arch}
 	BASE_IMAGE_PREFIX="${base_image_prefix_map[${arch}]}"
   docker build \
