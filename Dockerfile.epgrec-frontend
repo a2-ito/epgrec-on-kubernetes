@@ -17,8 +17,6 @@ COPY qemu-${ARCH}-static /usr/bin
 RUN apk --update --no-cache add git at
 
 #RUN apt-get -y update && apt-get install -y git at
-RUN ls -ltr
-RUN pwd
 RUN git clone git://git.osdn.net/gitroot/epgrec/epgrec.git
 
 RUN cp epgrec/config.php.sample epgrec/config.php
@@ -29,6 +27,8 @@ RUN chmod 777 epgrec/video
 RUN chmod 777 epgrec/thumbs
 RUN chmod 777 epgrec/settings
 RUN chmod 777 epgrec/cache
+
+RUN docker-php-ext-install mysqli
 
 # softcas
 #ADD ./softcas/libpcsclite.so.1.0.0 /usr/lib64/

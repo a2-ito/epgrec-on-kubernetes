@@ -41,21 +41,12 @@ spec:
         ports:
         - containerPort: 80
           name: epgrec-frontend
-        lifecycle:
-          postStart:
-            exec:
-              command: ["/bin/sh", "-c", "echo \"<?php phpinfo(); ?>\" > /var/www/html/phpinfo.php"]
         volumeMounts:
         - name: rectmp
           mountPath: /temp
-        volumeMounts:
-        - name: shared-files
-          mountPath: /var/www/html
       - image: nginx:1.17
         name: epgrec-frontend-web
         volumeMounts:
-        - name: shared-files
-          mountPath: /var/www/html
         - name: nginx-config-volume
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
@@ -65,8 +56,6 @@ spec:
       - name: rectmp
         persistentVolumeClaim:
           claimName: pvc-rectmp
-      - name: shared-files
-        emptyDir: {}
       - name: nginx-config-volume
         configMap:
           name: configmap-nginx
