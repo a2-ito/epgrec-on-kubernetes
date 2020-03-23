@@ -37,7 +37,6 @@ RUN chmod 777 epgrec/cache
 
 EXPOSE 80
 
-RUN mkdir -p /var/www/html
 RUN echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
 RUN echo "<?php echo \"Hello, PHP on Docker!\"; ?>" > /var/www/html/index.php
 
