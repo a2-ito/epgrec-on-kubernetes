@@ -40,6 +40,10 @@ spec:
         ports:
         - containerPort: 80
           name: epgrec-frontend
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "echo \"<?php phpinfo(); ?>\" > /var/www/html/phpinfo.php"]
         volumeMounts:
         - name: rectmp
           mountPath: /temp
@@ -64,5 +68,5 @@ spec:
         emptyDir: {}
       - name: nginx-config-volume
         configMap:
-          name: nginx-config
+          name: configmap-nginx
 
