@@ -29,7 +29,7 @@ spec:
         app: epgrec-frontend
     spec:
       containers:
-      - image: a2ito/epgrec-frontend:latest-amd64
+      - image: a2ito/epgrec-frontend:latest-arm
               #- image: php:7.2-fpm
         name: epgrec-frontend-php
         imagePullPolicy: Always
@@ -44,14 +44,14 @@ spec:
         volumeMounts:
         - name: rectmp
           mountPath: /temp
-      - image: nginx:1.17
+      - image: arm32v7/nginx:1.17
         name: epgrec-frontend-web
         volumeMounts:
         - name: nginx-config-volume
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
       nodeSelector:
-        kubernetes.io/arch: "amd64"
+        kubernetes.io/arch: "arm"
       volumes:
       - name: rectmp
         persistentVolumeClaim:
