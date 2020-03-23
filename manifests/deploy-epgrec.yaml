@@ -29,8 +29,8 @@ spec:
         app: epgrec-frontend
     spec:
       containers:
-              #- image: a2ito/epgrec-frontend:latest-amd64
-      - image: php:7.2-fpm
+      - image: a2ito/epgrec-frontend:latest-amd64
+              #- image: php:7.2-fpm
         name: epgrec-frontend-php
         env:
         - name: LANG
