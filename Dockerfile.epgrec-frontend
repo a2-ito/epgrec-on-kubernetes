@@ -21,8 +21,8 @@ RUN apk --update --no-cache add git at
 RUN git clone https://github.com/nonakap/epgrec-mod.git
 
 RUN mv epgrec-mod/ epgrec/
-RUN cp epgrec/config.php.sample epgrec/config.php
-RUN cp epgrec/do-record.sh.sample epgrec/do-record.sh
+#RUN cp epgrec/config.php.sample epgrec/config.php
+#RUN cp epgrec/do-record.sh.sample epgrec/do-record.sh
 
 RUN chmod 777 epgrec/templates_c
 RUN chmod 777 epgrec/video
