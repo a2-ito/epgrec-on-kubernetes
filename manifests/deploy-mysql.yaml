@@ -46,11 +46,13 @@ spec:
           name: mysql
           #command: ["mysqld", "--character-set-server=utf8", "--collation-server=utf8_unicode_ci"]
         volumeMounts:
-        - name: mysql-data
-          mountPath: /var/lib/mysql
+        - name: mysql-config-volume
+          mountPath: /etc/mysql/mysql.conf.d/mysqld.cnf
+          subPath: mysqld.cnf
       nodeSelector:
         kubernetes.io/arch: "amd64"
       volumes:
-      - name: mysql-data
-        persistentVolumeClaim:
-          claimName: pvc-mysql-data
+      - name: mysql-config-volume
+        configMap:
+          name: configmap-mysql
+
