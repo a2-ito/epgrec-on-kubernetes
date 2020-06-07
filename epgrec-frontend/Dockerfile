@@ -1,25 +1,24 @@
 ARG BASE_IMAGE_PREFIX
 #FROM ${BASE_IMAGE_PREFIX}alpine:3.10
-#FROM arm32v7/php:7.4-apache-buster
-FROM arm32v7/alpine:3.10
-
-COPY qemu-arm-static /usr/bin
+FROM ${BASE_IMAGE_PREFIX}php:7.2-fpm-alpine3.10
+#FROM arm32v7/alpine:3.10
+#FROM arm32v7/nginx
 
 # see hooks/post_checkout
-#ARG ARCH
-#COPY qemu-${ARCH}-static /usr/bin
+ARG ARCH
+COPY qemu-${ARCH}-static /usr/bin
+#COPY qemu-arm-static /usr/bin
 
 # add repository
 #RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 
 # install VNC & the desktop system
 #RUN uname -ar > /uname.build
-#RUN apk --update --no-cache add git
-RUN ls -ltr /etc
-RUN apt-get update -y && apt-get install -y git at
+RUN apk --update --no-cache add git at
 
 #RUN apt-get -y update && apt-get install -y git at
 RUN git clone git://git.osdn.net/gitroot/epgrec/epgrec.git
+#RUN git clone https://github.com/nonakap/epgrec-mod.git
 
 RUN cp epgrec/config.php.sample epgrec/config.php
 RUN cp epgrec/do-record.sh.sample epgrec/do-record.sh
@@ -40,7 +39,6 @@ RUN sed -i 's/mysql_connect/mysqli_connect/' epgrec/insall.step3.php
 
 EXPOSE 80
 
-RUN mkdir -p /var/www/html
 RUN echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
 RUN echo "<?php echo \"Hello, PHP on Docker!\"; ?>" > /var/www/html/index.php
 
