@@ -31,7 +31,7 @@ RUN chmod 777 epgrec/settings
 RUN chmod 777 epgrec/cache
 
 # For php7
-sed -i 's/mysql_connect/mysqli_connect/' epgrec/insall.step3.php
+RUN sed -i 's/mysql_connect/mysqli_connect/' epgrec/insall.step3.php
 
 # softcas
 #ADD ./softcas/libpcsclite.so.1.0.0 /usr/lib64/
