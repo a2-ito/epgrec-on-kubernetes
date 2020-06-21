@@ -1,6 +1,7 @@
 ARG BASE_IMAGE_PREFIX
 #FROM ${BASE_IMAGE_PREFIX}alpine:3.10
-FROM ${BASE_IMAGE_PREFIX}php:7.2-fpm-alpine3.10
+#FROM ${BASE_IMAGE_PREFIX}php:7.2-fpm-alpine3.10
+FROM ${BASE_IMAGE_PREFIX}php:5.6.40-fpm
 #FROM arm32v7/alpine:3.10
 #FROM arm32v7/nginx
 
